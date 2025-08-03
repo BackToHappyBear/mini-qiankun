@@ -64,6 +64,15 @@ function extractScripts(html: string, publicPath: string): string[] {
   return scripts
 }
 
+/**
+ * 提取HTML中的样式
+ * 
+ * 从HTML字符串中提取所有link标签的href属性和style标签内容
+ * 
+ * @param html HTML字符串
+ * @param publicPath 资源公共路径
+ * @returns string[] 样式URL或内联样式数组
+ */
 function extractStyles(html: string, publicPath: string): string[] {
   const linkRegex = /<link[^>]*href=["']([^"']+)["'][^>]*<\/link>/gi
   const styleRegex = /<style[^>]*>([^<]*)<\/style>/gi
@@ -86,6 +95,13 @@ function extractStyles(html: string, publicPath: string): string[] {
   return styles
 }
 
+/**
+ * 注入样式到页面
+ * 
+ * 将提取的样式链接或内联样式动态注入到当前页面
+ * 
+ * @param styles 样式URL或内联样式数组
+ */
 function injectStyles(styles: string[]): void {
   styles.forEach(style => {
     if (style.startsWith('<style>')) {
@@ -101,6 +117,14 @@ function injectStyles(styles: string[]): void {
   })
 }
 
+/**
+ * 处理HTML模板
+ * 
+ * 对原始HTML模板进行处理，移除其中的脚本、样式链接和内联样式
+ * 
+ * @param template 原始HTML模板
+ * @returns string 处理后的HTML模板
+ */
 function processTemplate(template: string): string {
   return template
     .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
@@ -108,6 +132,14 @@ function processTemplate(template: string): string {
     .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
 }
 
+/**
+ * 执行脚本
+ * 
+ * 动态加载并执行提取的脚本，并提取微应用的生命周期方法
+ * 
+ * @param scripts 脚本URL或内联脚本数组
+ * @returns Promise<any> 包含微应用生命周期方法的对象
+ */
 async function execScripts(scripts: string[]): Promise<any> {
   const beforeExecution = { ...window }
 

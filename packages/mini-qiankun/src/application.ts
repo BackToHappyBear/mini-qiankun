@@ -1,16 +1,72 @@
-import { MicroApp, LifeCycles, MicroAppInstance } from './types';
-import { importEntry } from './loader';
+/**
+   * 微应用管理器模块
+   * 
+   * 该模块提供微应用生命周期管理功能，包括应用注册、加载、挂载、卸载等
+   * 是 mini-qiankun 的核心控制模块
+   */
+  import { importEntry } from './loader';
+  import type { MicroApp, MicroAppInstance, LifeCycles } from './types';
 
+/**
+ * 微应用管理器类
+ * 
+ * 负责管理所有注册的微应用及其生命周期
+ */
 export class ApplicationManager {
+  /**
+   * 存储所有已注册的微应用实例
+   * 
+   * @private
+   * @static
+   * @type {Map<string, MicroAppInstance>}
+   */
   private static apps = new Map<string, MicroAppInstance>();
+  /**
+   * 存储所有微应用配置
+   * 
+   * @private
+   * @static
+   * @type {Map<string, MicroApp>}
+   */
   private static appConfigs: Map<string, MicroApp> = new Map();
+  /**
+   * 全局生命周期钩子
+   * 
+   * @private
+   * @static
+   * @type {LifeCycles}
+   */
   private static globalLifeCycles?: LifeCycles = {};
+  /**
+   * 当前激活的微应用名称
+   * 
+   * @private
+   * @static
+   * @type {string | null}
+   */
   private static currentApp: string | null = null;
 
+  /**
+   * 设置全局生命周期钩子
+   * 
+   * @static
+   * @param {LifeCycles} lifeCycles 包含全局生命周期方法的对象
+   * @returns {void}
+   */
   static setGlobalLifeCycles(lifeCycles: LifeCycles) {
     this.globalLifeCycles = lifeCycles;
   }
 
+  /**
+   * 注册微应用
+   * 
+   * 将微应用配置添加到管理器中，并初始化应用实例
+   * 
+   * @static
+   * @param {MicroApp} app 微应用配置对象
+   * @returns {void}
+   * @throws 当应用名称已存在时抛出异常
+   */
   static registerApp(app: MicroApp): void {
     if (!this.apps.has(app.name)) {
 
@@ -24,6 +80,16 @@ export class ApplicationManager {
     }
   }
 
+  /**
+   * 加载微应用
+   * 
+   * 加载指定名称的微应用资源
+   * 
+   * @static
+   * @param {string} appName 微应用名称
+   * @returns {Promise<void>} 加载完成的Promise
+   * @throws 当应用不存在或加载失败时抛出异常
+   */
   static async loadApp(appName: string): Promise<void> {
     const appInstance = this.apps.get(appName)
     if (!appInstance) {
