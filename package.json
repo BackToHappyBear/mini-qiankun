@@ -8,7 +8,7 @@
     "examples/*"
   ],
   "scripts": {
-    "dev": "",
+    "build": "pnpm --filter mini-qiankun run build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
@@ -25,5 +25,8 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.3",
     "prettier": "^3.6.2"
+  },
+  "devDependencies": {
+    "tslib": "^2.8.1"
   }
 }
